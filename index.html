@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You</title>
+    <style>
+        /* CSS STYLES */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffe6e9; /* Soft pink background */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 90%;
+            transition: transform 0.3s ease;
+        }
+
+        h1 {
+            color: #d32f2f;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .bouquet {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        p.subtext {
+            color: #555;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 250px;
+        }
+
+        #yes-btn {
+            background-color: #ff4d6d;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+        }
+
+        #yes-btn:hover {
+            background-color: #d63353;
+            transform: scale(1.05);
+        }
+
+        #no-btn {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        #no-btn:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Success Message Styling */
+        .success-message {
+            display: none;
+        }
+
+        .success-message h2 {
+            color: #ff4d6d;
+            font-size: 2rem;
+        }
+        
+        .success-message p {
+            font-size: 1.2rem;
+            color: #444;
+            margin-top: 10px;
+        }
+
+        /* Floating animation for the bouquet */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="main-card">
+        <div class="bouquet">💐</div>
+        <h1>Will you be my Valentine?</h1>
+        <p class="subtext" id="subtext">I got these for you!</p>
+        
+        <div class="buttons">
+            <button id="yes-btn" onclick="acceptProposal()">Yes! 💖</button>
+            <button id="no-btn" onclick="handleNo()">No (don't press pls)</button>
+        </div>
+    </div>
+
+    <div class="container success-message" id="success-card">
+        <div class="bouquet">🎉❤️🎉</div>
+        <h2>Yayyy okay!</h2>
+        <p>Be ready 5:30PM 14th February 2026</p>
+    </div>
+
+    <script>
+        /* JAVASCRIPT LOGIC */
+        let noClickCount = 0;
+        const noBtn = document.getElementById('no-btn');
+        const subtext = document.getElementById('subtext');
+        
+        // Array of increasingly sad messages
+        const sadMessages = [
+            "I thought I said not to click no...",
+            "Please stop, you're making me sad.",
+            "I'm really sad now ",
+            "Why are you doing this to me?",
+            "Last warning... my heart is breaking 💔",
+            "Fine. I'm leaving." // This text won't show because button disappears
+        ];
+
+        function handleNo() {
+            noClickCount++;
+
+            // If we haven't reached the limit yet
+            if (noClickCount < 6) {
+                // Change the text on the button
+                noBtn.innerText = sadMessages[noClickCount - 1];
+                
+                // Optional: Make the Yes button grow slightly to encourage clicking it
+                const yesBtn = document.getElementById('yes-btn');
+                let currentSize = 16 + (noClickCount * 2); 
+                yesBtn.style.fontSize = currentSize + "px";
+                
+                // Add a little shake effect (optional visual feedback)
+                noBtn.style.transform = "translateX(5px)";
+                setTimeout(() => { noBtn.style.transform = "translateX(0)"; }, 100);
+
+            } else {
+                // 6th time: The button disappears
+                noBtn.style.display = "none";
+                subtext.innerText = "Okay, now you have to say yes! 😉";
+            }
+        }
+
+        function acceptProposal() {
+            // Hide the question card
+            document.getElementById('main-card').style.display = 'none';
+            // Show the success card
+            document.getElementById('success-card').style.display = 'block';
+            
+            // Optional: Launch confetti effect logic here if you wanted to add external libraries
+        }
+    </script>
+</body>
+</html>
